@@ -1,0 +1,235 @@
+Implement Logistic regression on iris dataset
+
+
+install.packages("caTools")
+install.packages("ROCR")
+library(caTools)
+library(ROCR)
+
+# Load dataset and fix incorrect function call
+dataset <- mtcars
+
+# Split the dataset into training and testing sets
+set.seed(123)
+split <- sample.split(dataset$vs, SplitRatio = 0.7)
+train_reg <- subset(dataset, split == TRUE)
+test_reg <- subset(dataset, split == FALSE)
+
+# Train logistic regression model
+logistic_model <- glm(vs ~ wt + disp, data = train_reg, family = binomial)
+
+# Print summary of the logistic model
+summary(logistic_model)
+
+# Make predictions on the test set
+predict_reg <- predict(logistic_model, test_reg, type = "response")
+
+# Convert probabilities to class predictions
+predict_reg <- ifelse(predict_reg > 0.5, 1, 0)
+
+# Evaluate model
+confusion_matrix <- table(test_reg$vs, predict_reg)
+accuracy <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+print(paste('Accuracy =', accuracy))
+
+# Create ROC curve
+ROCPred <- prediction(predict_reg, test_reg$vs)
+ROCPer <- performance(ROCPred, measure = "tpr", x.measure = "fpr")
+auc <- performance(ROCPred, measure = "auc")
+auc <- auc@y.values[[1]]
+plot(ROCPer, colorize = TRUE, print.cutoffs.at = seq(0.1, by = 0.1), main = "ROC CURVE")
+abline(a = 0, b = 1)
+auc <- round(auc, 4)
+legend(0.6, 0.4, legend = paste("AUC =", auc), cex = 1, title = "AUC")
+
+
+###########################################################################################
+# Import iris data set and display first 3rd and last Column
+
+
+data(iris)
+print(iris)
+iris[,c(1,3,ncol(iris))]
+print(iris)
+
+
+
+########################################################################################
+
+# Import iris data set and display first three columns
+
+
+data(iris)
+print(iris)
+iris_subSet<-iris[,c(1,2,3)]
+print(iris_subSet)
+
+########################################################################################
+
+
+# implement linear regression on iris dataset
+library(datasets)
+library(ggplot2)
+
+data(iris)
+ggplot(iris, aes(x = Sepal.Length, y = Petal.Length)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", color = "red")
+
+
+
+###########################################################################################
+# implements kmeans clustring in your own dataset create database using vector
+
+set.seed(123)
+mydata <- data.frame(x = runif(100), y = runif(100), z = runif(100))
+kmeans_result <- kmeans(mydata, 3)
+centers <- kmeans_result$centers
+cluster_assignments <- kmeans_result$cluster 
+
+print(centers)
+print(cluster_assignments)
+
+library(ggplot2)
+ggplot(mydata, aes(x, y, color = factor(cluster_assignments))) + geom_point()
+
+
+###########################################################################################
+
+# Random Forest algorithm implement on irirs dataset
+install.packages("randomForest")
+library(randomForest)
+iris_1=iris[sample(150),]
+View(iris_1)
+train=iris_1[1:100,]
+test=iris[101:150,]
+model=randomForest(Species~.,data = train)
+plot(model)
+p=predict(model,test)
+p
+table(p,test$Species)
+accuracy=(17+16+16)/50*100
+accuracy
+##########################################################################################
+
+implement SVM algorithm using WDBC dataset
+
+library(e1071)
+library(caret)
+install.packages("e1071")
+install.packages("caret")
+library(e1o71)
+library(caret)
+data("WDBC")
+df <- WDBC
+Preprocess data df$diagnosis <- factor(df$diagnosis, levels = c("B", "M"))
+set.seed(123)
+train_index <- createDataPar
+train_data <- df[train_index, ]
+test_data <- df[-train_index, ] on(df$diagnosis, p = 0.7, list = FALSE)
+svm_model <- svm(diagnosis ~ ., data = train_data, kernel = "radial")
+predic ons <- predict(svm_model, newdata = test_data)
+confusionMatrix(predic ons, test_data$diagnosis)
+
+##########################################################################################
+implement Aprori algorithm
+
+install.packages("arules")
+install.packages("arulesViz")
+install.packages("RColorBrewer")
+library(arules)
+library(arulesViz)
+library(RColorBrewer)
+data("Groceries")
+rules <- apriori(Groceries, parameter = list(supp = 0.01, conf = 0.2))
+inspect(rules[1:10])
+itemFrequencyPlot(
+ Groceries,
+ topN = 20,
+ col = brewer.pal(8, 'Pastel2'),
+ main = 'Relative Item Frequency Plot',
+ type = "relative",
+ ylab = "Item Frequency (Relative)"
+) 
+
+#############################################################################################
+				PART A 
+
+Implement the naive bayes algorithm on the iris dataset
+
+
+if (!requireNamespace("e1071")) install.packages("e1071")
+library(e1071)
+data(iris)
+set.seed(123)
+sample_index <- sample(nrow(iris), size = 0.7 * nrow(iris), replace = FALSE)
+train_data <- iris[sample_index, ]
+test_data <- iris[-sample_index, ]
+model <- naiveBayes(Species ~ ., data = train_data)
+predictions <- predict(model, newdata = test_data)
+conf_matrix <- table(predictions, test_data$Species)
+print(conf_matrix)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+print(paste("Accuracy:", round(accuracy, 4)))
+plot(conf_matrix)
+
+##########################################################################################
+
+implements the KNN algorithm on the brest cancer dataset
+
+if (!requireNamespace("e1071")) install.packages("e1071")
+library(e1071)
+data(iris)
+set.seed(123)
+sample_index <- sample(nrow(iris), size = 0.7 * nrow(iris), replace =
+FALSE)
+train_data <- iris[sample_index, ]
+test_data <- iris[-sample_index, ]
+model <- naiveBayes(Species ~ ., data = train_data)
+predicƟons <- predict(model, newdata = test_data)
+conf_matrix <- table(predicƟons, test_data$Species)
+print(conf_matrix)
+accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+print(paste("Accuracy:", round(accuracy, 4)))
+plot(train_data)
+
+#########################################################################################
+
+implement decision tree on credit  card issue dataset (import  from kaggle)
+
+
+install.packages("Rtools")
+library(Rtools)
+# suffling iris Dataset
+iris=iris[sample(150),]
+#splitting dataset into traning and testing 
+train=iris[1:100,]
+test=iris[101:150,]
+tree=ctree(Species~Petal.Length+Petal.Width,data=train)
+plot(tree)
+p=predict(tree,test)
+table(p.test$Species)
+accuracy=(21+16+10)/50*100
+print(accuracy)
+
+#########################################################################################
+
+create a code to display Fibonacci  Series
+
+fib <- function(n) ifelse(n <= 2, 1, Recall(n - 1) + Recall(n - 2))
+print(sapply(1:10, fib))
+
+#########################################################################################
+
+Create a list in a data structure that ha component has component of mixed data type
+
+
+
+
+
+
+
+
+
+
+
